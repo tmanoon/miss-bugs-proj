@@ -3,7 +3,7 @@ import { storageService } from './async-storage.service.js'
 import { utilService } from './util.service.js'
 
 const STORAGE_KEY = 'bugDB'
-const BASE_URL = `api/bug/`
+const BASE_URL = `/api/bug/`
 // _createBugs()
 
 export const bugService = {
@@ -21,21 +21,44 @@ function query() {
 }
 
 function getById(bugId) {
-    return storageService.get(STORAGE_KEY, bugId)
+    return axios.get(BASE_URL + bugId)
+            .then(res => res.data)
+    // return storageService.get(STORAGE_KEY, bugId)
 }
 
 function remove(bugId) {
-    return storageService.remove(STORAGE_KEY, bugId)
+    return axios.get(BASE_URL + bugId + '/remove')
+            .then(res => res.data)
 }
 
 function save(bug) {
     if (bug._id) {
-        return storageService.put(STORAGE_KEY, bug)
+        return axios.get(BASE_URL + `save?title=${bug.title}&severity=${bug.severity}&_id=${bug._id}&description=${bug.description}`)
+                .then(res => res.data)
     } else {
-        return storageService.post(STORAGE_KEY, bug)
+        return axios.get(BASE_URL + `save?title=${bug.title}&severity=${bug.severity}&description=${bug.description}`)
+        .then(res => res.data)
     }
 }
 
+// app.get('/api/bug/save', (req, res) => {
+//     const bugToSave = {
+//         title: req.query.title,
+//         severity: +req.query.severity,
+//         _id: req.query._id
+//     }
+
+//     bugsService.save(bugToSave)
+//         .then(bug => {
+//             console.log(bug)
+//             res.send(bug)
+//         })
+
+//         .catch((err) => {
+//             // loggerService.error('Cannot save bug', err)
+//             res.status(400).send('Cannot save bug', err)
+//         })
+// }) 
 // function _createBugs() {
 //     let bugs = utilService.loadFromStorage(STORAGE_KEY)
 //     if (!bugs || !bugs.length) {

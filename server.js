@@ -16,6 +16,7 @@ app.get('/api/bug/save', (req, res) => {
     const bugToSave = {
         title: req.query.title,
         severity: +req.query.severity,
+        description: req.query.description,
         _id: req.query._id
     }
 
@@ -32,7 +33,7 @@ app.get('/api/bug/save', (req, res) => {
 }) 
 
 app.get('/api/bug/:bugId', (req, res) => {
-    const bugId = req.params.id
+    const bugId = req.params.bugId
     bugsService.getById(bugId)
         .then(bug => res.send(bug))
         .catch(err => {
@@ -40,9 +41,10 @@ app.get('/api/bug/:bugId', (req, res) => {
             res.status(400).send('Cannot get bug')
         })
 }) 
+
 app.get('/api/bug/:bugId/remove', (req, res) => {
     console.log('delete....');
-    const bugId = req.params.id
+    const bugId = req.params.bugId
     bugsService.remove(bugId)
         .then(() => res.send(bugId))
         .catch((err) => {

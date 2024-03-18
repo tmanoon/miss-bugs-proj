@@ -30,7 +30,6 @@ function save(bug) {
     if (bug._id) {
         const bugIdx = bugs.findIndex(_bug => _bug._id === bug._id)
         bugs[bugIdx] = bug
-        console.log(utilService.makeLorem(10))
     } else {
         bug._id = utilService.makeId()
         bugs.unshift(bug)

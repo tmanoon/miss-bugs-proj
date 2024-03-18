@@ -16,7 +16,7 @@ export function BugDetails() {
                 setBug(bug)
             })
             .catch(err => {
-                showErrorMsg('Cannot load bug')
+                showErrorMsg('Cannot load bug', err)
             })
     }, [])
 
@@ -25,6 +25,7 @@ export function BugDetails() {
         <h3>Bug Details 🐛</h3>
         <h4>{bug.title}</h4>
         <p>Severity: <span>{bug.severity}</span></p>
+        <p>Description: <span>{bug.description}</span></p>
         <Link to="/bug">Back to List</Link>
     </div>
 
