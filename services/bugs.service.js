@@ -1,5 +1,7 @@
 import fs from 'fs'
-import { utilService } from "./util.service.js";
+import { utilService } from "./util.service.js"
+
+const labels = ["Quaker", "Pikpookon", "Yarok", "Badood", "Cute", "Hungry", "Lovely", "Scary"]
 export const bugsService = {
     query,
     getById,
@@ -32,6 +34,8 @@ function save(bug) {
         bugs[bugIdx] = bug
     } else {
         bug._id = utilService.makeId()
+        bug.createdAt = Date.now()
+        bug.labels = bug.labels.split(',')
         bugs.unshift(bug)
     }
     return _saveBugsToFile().then(() => bug)
