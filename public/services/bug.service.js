@@ -33,10 +33,10 @@ function remove(bugId) {
 
 function save(bug) {
     if (bug._id) {
-        return axios.get(BASE_URL + `save?title=${bug.title}&severity=${bug.severity}&_id=${bug._id}&description=${bug.description}`)
+        return axios.put(BASE_URL, bug)
                 .then(res => res.data)
     } else {
-        return axios.get(BASE_URL + `save?title=${bug.title}&severity=${bug.severity}&description=${bug.description}`)
+        return axios.post(BASE_URL, bug)
         .then(res => res.data)
     }
 }

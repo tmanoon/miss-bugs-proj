@@ -6,6 +6,7 @@ const app = express()
 
 app.use(express.static('public'))
 app.use(cookieParser())
+app.use(express.json())
 
 
 app.get('/api/bug', (req, res) => {
@@ -14,12 +15,33 @@ app.get('/api/bug', (req, res) => {
         .catch(err => console.log('err', err))
 })
 
-app.get('/api/bug/save', (req, res) => {
+app.post('/api/bug/', (req, res) => {
     const bugToSave = {
-        title: req.query.title,
-        severity: +req.query.severity,
-        description: req.query.description,
-        _id: req.query._id
+        title: req.body.title,
+        severity: +req.body.severity,
+        description: req.body.description,
+        labels: req.body.labels,
+    }
+
+    bugsService.save(bugToSave)
+        .then(bug => {
+            console.log(bug)
+            res.send(bug)
+        })
+
+        .catch((err) => {
+            // loggerService.error('Cannot save bug', err)
+            res.status(400).send('Cannot save bug', err)
+        })
+}) 
+
+app.put('/api/bug/', (req, res) => {
+    const bugToSave = {
+        title: req.body.title,
+        severity: +req.body.severity,
+        description: req.body.description,
+        labels: req.body.labels,
+        _id: req.body._id
     }
 
     bugsService.save(bugToSave)
