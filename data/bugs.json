@@ -12,33 +12,14 @@
         "_id": "IzrXa"
     },
     {
-        "title": "tooti",
-        "severity": 90,
-        "description": "Manoon is also being called tooti",
-        "_id": "Dyl1T"
-    },
-    {
-        "title": "tmanoon",
-        "severity": 7888,
-        "description": "Tmanoon Tmanooni",
-        "_id": "j7srz"
-    },
-    {
         "title": "Infinite Loop Detected",
         "severity": 4,
         "description": "while(true)",
         "_id": "1NF1N1T3"
     },
     {
-        "title": "Keyboard Not Found",
-        "severity": 3,
-        "description": "Kashoosh is trying to eat my keyboard everyday",
-        "_id": "K3YB0RD"
-    },
-    {
         "title": "404 Coffee Not Found",
         "severity": 2,
-        "description": "I always find my black Al Nahla coffee, it is my fuel",
         "_id": "C0FF33"
     }
 ]

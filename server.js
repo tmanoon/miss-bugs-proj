@@ -1,9 +1,11 @@
 import express from 'express'
+import cookieParser from 'cookie-parser'
 import { bugsService } from './services/bugs.service.js'
 
 const app = express()
-// app.get('/', (req, res) => res.send('Hello there')) 
+
 app.use(express.static('public'))
+app.use(cookieParser())
 
 
 app.get('/api/bug', (req, res) => {
@@ -34,6 +36,8 @@ app.get('/api/bug/save', (req, res) => {
 
 app.get('/api/bug/:bugId', (req, res) => {
     const bugId = req.params.bugId
+    let visitedBugs = []
+    if(req.cookies.visitedBugs) visitedBugs = JSON.parse(req.cookies.visitedBugs)
     bugsService.getById(bugId)
         .then(bug => res.send(bug))
         .catch(err => {
@@ -42,8 +46,7 @@ app.get('/api/bug/:bugId', (req, res) => {
         })
 }) 
 
-app.get('/api/bug/:bugId/remove', (req, res) => {
-    console.log('delete....');
+app.delete('/api/bug/:bugId', (req, res) => {
     const bugId = req.params.bugId
     bugsService.remove(bugId)
         .then(() => res.send(bugId))
