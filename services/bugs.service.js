@@ -1,7 +1,8 @@
 import fs from 'fs'
 import { utilService } from "./util.service.js"
 
-const labels = ["Quaker", "Pikpookon", "Yarok", "Badood", "Cute", "Hungry", "Lovely", "Scary"]
+const PAGE_SIZE = 2
+
 export const bugsService = {
     query,
     getById,
@@ -11,8 +12,31 @@ export const bugsService = {
 
 const bugs = utilService.readJsonFile('data/bugs.json')
 
-function query() {
-    return Promise.resolve(bugs)
+function query(filterBy) {
+    let bugsToReturn = bugs
+    if (filterBy.txt) {
+        const regex = new RegExp(filterBy.txt, 'i')
+        bugsToReturn = bugsToReturn.filter(bug => regex.test(bug.title) || regex.test(bug.description) || bug.labels.some(label => regex.test(label)))
+    }
+    if (filterBy.minSeverity) {
+        bugsToReturn = bugsToReturn.filter(bug => bug.severity >= filterBy.minSeverity)
+    }
+    if (filterBy.labels) {
+        bugsToReturn = bugsToReturn.filter(bug => {
+            return bug.labels.some(label => filterBy.labels.includes(label))
+        })
+    }
+    if(filterBy.sortBy) {
+        if(filterBy.sortBy === 'title') bugsToReturn = bugsToReturn.sort((firstBug, secondBug) => (firstBug[filterBy.sortBy].localeCompare(secondBug[filterBy.sortBy])) * filterBy.sortDir )
+        else bugsToReturn = bugsToReturn.sort((firstBug, secondBug) => (firstBug[filterBy.sortBy] - secondBug[filterBy.sortBy]) * filterBy.sortDir )
+    }
+
+    if (filterBy.pageIdx !== undefined) {
+        const pageIdx = +filterBy.pageIdx
+        const startIdx = pageIdx * PAGE_SIZE
+        bugsToReturn = bugsToReturn.slice(startIdx, startIdx + PAGE_SIZE)
+    }
+    return Promise.resolve(bugsToReturn)
 }
 
 function getById(id) {

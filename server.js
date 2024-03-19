@@ -10,9 +10,19 @@ app.use(express.json())
 
 
 app.get('/api/bug', (req, res) => {
-    bugsService.query()
+    const filterBy = {
+        txt: req.query.txt || '',
+        desc: req.query.labels || '',
+        minSpeed: +req.query.minSeverity || 0,
+        sortBy: req.query.sortBy || '',
+        sortDir: req.query.sortDir || '',
+        pageIdx: req.query.pageIdx
+    }
+    
+    bugsService.query(filterBy)
         .then(bugs => res.send(bugs))
         .catch(err => console.log('err', err))
+
 })
 
 app.post('/api/bug/', (req, res) => {

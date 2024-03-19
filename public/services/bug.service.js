@@ -11,13 +11,14 @@ export const bugService = {
     getById,
     save,
     remove,
+    getDefaultFilter,
+    getFilterFromParams
 }
 
 
-function query() {
-    return axios.get(BASE_URL)
-            .then(res => res.data)
-            .then(bugs => {return bugs} )
+function query(filterBy = getDefaultFilter()) {
+    return axios.get(BASE_URL, { params: filterBy })
+        .then(res => res.data)
 }
 
 function getById(bugId) {
@@ -41,52 +42,17 @@ function save(bug) {
     }
 }
 
-// app.get('/api/bug/save', (req, res) => {
-//     const bugToSave = {
-//         title: req.query.title,
-//         severity: +req.query.severity,
-//         _id: req.query._id
-//     }
+function getDefaultFilter() {
+    return { txt: '', minSeverity: 0, labels: '', sortBy: '', sortDir: 1 }
+}
 
-//     bugsService.save(bugToSave)
-//         .then(bug => {
-//             console.log(bug)
-//             res.send(bug)
-//         })
-
-//         .catch((err) => {
-//             // loggerService.error('Cannot save bug', err)
-//             res.status(400).send('Cannot save bug', err)
-//         })
-// }) 
-// function _createBugs() {
-//     let bugs = utilService.loadFromStorage(STORAGE_KEY)
-//     if (!bugs || !bugs.length) {
-//         bugs = [
-//             {
-//                 title: "Infinite Loop Detected",
-//                 severity: 4,
-//                 _id: "1NF1N1T3"
-//             },
-//             {
-//                 title: "Keyboard Not Found",
-//                 severity: 3,
-//                 _id: "K3YB0RD"
-//             },
-//             {
-//                 title: "404 Coffee Not Found",
-//                 severity: 2,
-//                 _id: "C0FF33"
-//             },
-//             {
-//                 title: "Unexpected Response",
-//                 severity: 1,
-//                 _id: "G0053"
-//             }
-//         ]
-//         utilService.saveToStorage(STORAGE_KEY, bugs)
-//     }
-
-
-
-
+function getFilterFromParams(searchParams = {}) {
+    const defaultFilter = getDefaultFilter()
+    return {
+        txt: searchParams.get('txt') || defaultFilter.txt,
+        minSeverity: searchParams.get('minSeverity') || defaultFilter.minSeverity,
+        labels: searchParams.get('labels') || defaultFilter.labels,
+        sortBy:  searchParams.get('sortBy') || defaultFilter.sortBy,
+        sortDir:  searchParams.get('sortDir') || defaultFilter.sortDir
+    }
+}

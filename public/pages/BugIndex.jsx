@@ -1,18 +1,38 @@
 import { bugService } from '../services/bug.service.js'
+import { utilService } from '../services/util.service.js'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
+import { BugFilter } from '../cmps/BugFilter.jsx'
 import { BugList } from '../cmps/BugList.jsx'
-
-const { useState, useEffect } = React
+const { Link, useSearchParams } = ReactRouterDOM
+const { useState, useEffect, useRef } = React
 
 export function BugIndex() {
     const [bugs, setBugs] = useState(null)
+    const [searchParams, setSearchParams] = useSearchParams()
+    const [filterBy, setFilterBy] = useState(bugService.getFilterFromParams(searchParams))
+    const debounceOnSetFilter = useRef(utilService.debounce(onSetFilter, 500))
 
     useEffect(() => {
+        setSearchParams(filterBy)
         loadBugs()
-    }, [])
+    }, [filterBy])
 
     function loadBugs() {
-        bugService.query().then(setBugs)
+        bugService.query(filterBy).then(bugs => setBugs(bugs))
+    }
+
+    function onSetFilter(fieldsToUpdate) {
+        setFilterBy(prevFilter => {
+            if (prevFilter.pageIdx !== undefined) prevFilter.pageIdx = 0
+            return { ...prevFilter, ...fieldsToUpdate }
+        })
+    }
+
+    function onChangePage(diff) {
+        if (filterBy.pageIdx === undefined) return
+        let nextPageIdx = filterBy.pageIdx + diff
+        if (nextPageIdx < 0) nextPageIdx = 0
+        setFilterBy(prevFilter => ({ ...prevFilter, pageIdx: nextPageIdx }))
     }
 
     function onRemoveBug(bugId) {
@@ -28,6 +48,13 @@ export function BugIndex() {
                 console.log('Error from onRemoveBug ->', err)
                 showErrorMsg('Cannot remove bug')
             })
+    }
+
+    function onTogglePagination() {
+        setFilterBy(prevFilter => ({
+            ...prevFilter,
+            pageIdx: filterBy.pageIdx === undefined ? 0 : undefined
+        }))
     }
 
     function onAddBug() {
@@ -71,8 +98,13 @@ export function BugIndex() {
 
     return (
         <main>
+            <button onClick={() => onChangePage(-1)}>-</button>
+            <span>{filterBy.pageIdx + 1 || 'No pagination'}</span>
+            <button onClick={() => onChangePage(1)}>+</button>
+            <button onClick={onTogglePagination}>Toggle Pagination</button>
             <h3>Bugs App</h3>
             <main>
+                <BugFilter onSetFilter={debounceOnSetFilter.current} filterBy={filterBy} />
                 <button onClick={onAddBug}>Add Bug ⛐</button>
                 <BugList bugs={bugs} onRemoveBug={onRemoveBug} onEditBug={onEditBug} />
             </main>
