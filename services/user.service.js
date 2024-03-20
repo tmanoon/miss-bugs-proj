@@ -56,6 +56,8 @@ function remove(userId) {
 }
 
 function save(user) {
+    const isExistedUser = users.find(_user => _user.username === user.username && _user.password === user.password)
+    if(isExistedUser) return Promise.reject('User already exists in our system.')
     user._id = utilService.makeId()
     // TODO: severe security issue- attacker can post admins
     users.push(user)

@@ -52,14 +52,20 @@ function remove(id) {
 
 }
 
-function save(bug) {
+function save(bug, loggedinUser) {
     if (bug._id) {
-        const bugIdx = bugs.findIndex(_bug => _bug._id === bug._id)
+        const bugToUpdate = bugs.find(_bug => _bug._id === bug._id)
+        if (!loggedinUser.isAdmin &&
+            bugToUpdate.creator._id !== loggedinUser._id) {
+            return Promise.reject('Not your bug')
+        }
         bugs[bugIdx] = bug
     } else {
+        console.log('there')
         bug._id = utilService.makeId()
         bug.createdAt = Date.now()
-        bug.labels = bug.labels.split(',')
+        bug.labels = bug.labels.replaceAll(' ', '').split(',')
+        bug.creator = loggedinUser
         bugs.unshift(bug)
     }
     return _saveBugsToFile().then(() => bug)
