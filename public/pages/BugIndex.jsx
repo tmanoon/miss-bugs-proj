@@ -66,7 +66,6 @@ export function BugIndex() {
             labels: prompt('Enter at least two labels, separated by commas (= ",")'),
             creator: userService.getLoggedinUser()
         }
-        console.log(bug)
         bugService
             .save(bug)
             .then((savedBug) => {
