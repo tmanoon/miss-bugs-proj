@@ -1,5 +1,6 @@
 import { bugService } from '../services/bug.service.js'
 import { utilService } from '../services/util.service.js'
+import { userService } from '../services/user.service.js'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
 import { BugFilter } from '../cmps/BugFilter.jsx'
 import { BugList } from '../cmps/BugList.jsx'
@@ -62,8 +63,10 @@ export function BugIndex() {
             title: prompt('Bug title?'),
             severity: +prompt('Bug severity?'),
             description: prompt('Description?'),
-            labels: prompt('Enter at least two labels, separated by commas (= ",")')
+            labels: prompt('Enter at least two labels, separated by commas (= ",")'),
+            creator: userService.getLoggedinUser()
         }
+        console.log(bug)
         bugService
             .save(bug)
             .then((savedBug) => {
