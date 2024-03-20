@@ -28,14 +28,17 @@ app.get('/api/bug', (req, res) => {
 })
 
 app.post('/api/bug/', (req, res) => {
+    const loggedinUser = userService.validateToken(req.cookies.loginToken)
+    if (!loggedinUser) return res.status(401).send('Cannot add car')
+
     const bugToSave = {
         title: req.body.title,
         severity: +req.body.severity,
         description: req.body.description,
-        labels: req.body.labels,
+        labels: req.body.labels
     }
 
-    bugsService.save(bugToSave)
+    bugsService.save(bugToSave, loggedinUser)
         .then(bug => {
             console.log(bug)
             res.send(bug)
@@ -48,6 +51,8 @@ app.post('/api/bug/', (req, res) => {
 }) 
 
 app.put('/api/bug/', (req, res) => {
+    const loggedinUser = userService.validateToken(req.cookies.loginToken)
+    if (!loggedinUser) return res.status(401).send('Cannot remove bug')
     const bugToSave = {
         title: req.body.title,
         severity: +req.body.severity,
@@ -56,15 +61,16 @@ app.put('/api/bug/', (req, res) => {
         _id: req.body._id
     }
 
-    bugsService.save(bugToSave)
+    bugsService.save(bugToSave, loggedinUser)
         .then(bug => {
             console.log(bug)
             res.send(bug)
         })
 
         .catch((err) => {
+            console.log('err', err)
             // loggerService.error('Cannot save bug', err)
-            res.status(400).send('Cannot save bug', err)
+            res.status(400).send(err => console.log('Cannot save bug', err))
         })
 }) 
 
@@ -81,6 +87,8 @@ app.get('/api/bug/:bugId', (req, res) => {
 }) 
 
 app.delete('/api/bug/:bugId', (req, res) => {
+    const loggedinUser = userService.validateToken(req.cookies.loginToken)
+    if (!loggedinUser) return res.status(401).send('Cannot remove bug')
     const bugId = req.params.bugId
     bugsService.remove(bugId)
         .then(() => res.send(bugId))
@@ -126,6 +134,10 @@ app.post('/api/auth/signup', (req, res) => {
             } else {
                 res.status(400).send('Cannot signup')
             }
+        })
+        .catch(err => {
+            console.log('err', err)
+            return
         })
 })
 
