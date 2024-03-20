@@ -10,7 +10,11 @@
             "Lovely"
         ],
         "_id": "mbtGp",
-        "createdAt": 1710857669958
+        "createdAt": 1710857669958,
+        "creator": {
+            "_id": "u102",
+            "fullname": "Manoon Manooni"
+        }
     },
     {
         "title": "Kashoosh",
@@ -22,7 +26,11 @@
             "Yarok"
         ],
         "createdAt": 1710857669958,
-        "_id": "FCeAa"
+        "_id": "FCeAa",
+        "creator": {
+            "_id": "u100",
+            "fullname": "Kashoosh Kashooshi"
+        }
     },
     {
         "title": "Doodi",
@@ -35,7 +43,11 @@
             "Cute",
             "Hungry",
             "Lovely"
-        ]
+        ],
+        "creator": {
+            "_id": "u102",
+            "fullname": "Manoon Manooni"
+        }
     },
     {
         "title": "Infinite Loop Detected",
@@ -47,7 +59,11 @@
             "Cute",
             "Yarok",
             "Scary"
-        ]
+        ],
+        "creator": {
+            "_id": "u101",
+            "fullname": "Shoval Sabag"
+        }
     },
     {
         "title": "Keyboard Not Found",
@@ -59,7 +75,11 @@
             "Pikpookon",
             "Yarok",
             "Scary"
-        ]
+        ],
+        "creator": {
+            "_id": "u101",
+            "fullname": "Shoval Sabag"
+        }
     },
     {
         "title": "404 Coffee Not Found",
@@ -71,6 +91,10 @@
             "Cute",
             "Yarok",
             "Hungry"
-        ]
+        ],
+        "creator": {
+            "_id": "u101",
+            "fullname": "Shoval Sabag"
+        }
     }
 ]
