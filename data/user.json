@@ -1,20 +1,32 @@
 [
-    {
-        "creator": {
-            "_id": "u101",
-            "fullname": "Shoval Sabag"
-        }
-    },
-    {
-        "creator": {
-            "_id": "u102",
-            "fullname": "Manoon Manooni"
-        }
-    },
-    {
-        "creator": {
-            "_id": "u100",
-            "fullname": "Kashoosh Kashooshi"
-        }
-    }
+  {
+    "_id": "u101",
+    "fullname": "Shoval Sabag",
+    "password": "Shoval17",
+    "username": "ShovalS"
+  },
+  {
+    "_id": "u102",
+    "fullname": "Manoon Manooni",
+    "password": "WhiteKraken8",
+    "username": "Manooni"
+  },
+  {
+    "_id": "u100",
+    "fullname": "Kashoosh Kashooshi",
+    "password": "Yarok10",
+    "username": "Kashooshi"
+  },
+  {
+    "fullname": "Badood Badoodi",
+    "password": "Badood7",
+    "username": "Badoodi",
+    "_id": "fin0Y"
+  },
+  {
+    "password": "Badood5",
+    "username": "Badoodi5",
+    "fullname": "Tmanoona",
+    "_id": "TTSzv"
+  }
 ]
