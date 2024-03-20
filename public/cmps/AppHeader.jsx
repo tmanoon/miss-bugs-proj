@@ -1,4 +1,4 @@
-const { NavLink } = ReactRouterDOM
+const { NavLink, Link } = ReactRouterDOM
 const { useEffect, useState } = React
 import { UserMsg } from './UserMsg.jsx'
 import { LoginSignup } from './LoginSignup.jsx'
@@ -31,7 +31,7 @@ export function AppHeader() {
       <UserMsg />
       <nav>
         <NavLink to="/">Home</NavLink> |<NavLink to="/bug">Bugs</NavLink> |
-        <NavLink to="/about">About</NavLink> | <NavLink to="/user/:userId">Profile</NavLink>
+        <NavLink to="/about">About</NavLink> | {user && <NavLink to={`/user/${user._id}`}>Profile</NavLink>}
       </nav>
       <h1>Bugs are Forever</h1>
       {user ? (
